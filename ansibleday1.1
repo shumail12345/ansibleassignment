@@ -1,0 +1,134 @@
+
+
+                         ASSIGNMENT 1 
+                         ANSIBLE 
+1-Use pip to install the ansible package and its dependencies to your control machine.
+   [vagrant@localhost ~]$ sudo easy_install pip
+Searching for pip
+Reading https://pypi.python.org/simple/pip/
+Best match: pip 10.0.1
+Downloading https://files.pythonhosted.org/packages/ae/e8/2340d46ecadb1692a1e455f13f75e596d4eab3d11a57446f08259dee8f02/pip-10.0.1.tar.gz#sha256=f2bd08e0cd1b06e10218feaf6fef299f473ba706582eb3bd9d52203fdbd7ee68
+Processing pip-10.0.1.tar.gz
+
+Installed /usr/lib/python2.7/site-packages/pip-10.0.1-py2.7.egg
+Processing dependencies for pip
+Finished processing dependencies for pip
+
+[vagrant@localhost ~]$ sudo pip install ansible 
+Collecting ansible
+  Downloading https://files.pythonhosted.org/packages/6e/95/490f5e39ee7cc7956eecd070610f0a873b97781c9efdbf6098bad2ed3ee0/ansible-2.5.4.tar.gz (10.1MB)
+Installing collected packages: ansible
+  Running setup.py install for ansible ... done
+Successfully installed ansible-2.5.4
+[vagrant@localhost ~]$ ansible --version
+ansible 2.5.4
+  config file = None
+  configured module search path = [u'/home/vagrant/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.7/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.7.5 (default, Apr 11 2018, 07:36:10) [GCC 4.8.5 20150623 (Red Hat 4.8.5-28)]
+
+[vagrant@localhost bin]$  ansible --version
+ansible 2.5.4
+  config file = None
+  configured module search path = [u'/home/vagrant/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.7/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.7.5 (default, Apr 11 2018, 07:36:10) [GCC 4.8.5 20150623 (Red Hat 4.8.5-28)]
+[vagrant@localhost ansible]$ ls -ltr
+drwxr-xr-x.  2 root root  129 Jun 11 06:41 config
+[vagrant@localhost ansible]$ cd config
+[vagrant@localhost config]$ ls
+base.yml  data.py  data.pyc  __init__.py  __init__.pyc  manager.py  manager.pyc
+
+2- establish ssh connection among three machine.check the conectivity by ping pong.
+root@shumail-Inspiron-N5110:/etc/ansible# ansible all -m ping
+[DEPRECATION WARNING]: DEFAULT_SUDO_USER option, In favor of Ansible Become, which is a generic framework. See become_user. , use become 
+instead. This feature will be removed in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+ansible.cfg.
+192.168.33.50 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+192.168.33.10 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+
+
+3- install git two remote server through ansible .
+root@shumail-Inspiron-N5110:/etc/ansible# ansible all -m apt -a "name=git state=present"
+root@shumail-Inspiron-N5110:/etc/ansible# ansible all -a "git --version"
+[DEPRECATION WARNING]: DEFAULT_SUDO_USER option, In favor of Ansible Become, which is a generic framework. See become_user. , use become 
+instead. This feature will be removed in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+ansible.cfg.
+192.168.33.50 | SUCCESS | rc=0 >>
+git version 1.8.3.1
+
+192.168.33.10 | SUCCESS | rc=0 >>
+git version 1.9.1
+
+
+
+4-  To write a simple playbook for installing git on remote servers  
+
+---
+- name: git installation
+  hosts: all
+  sudo: yes
+
+  tasks:
+    - name:
+      apt:
+         name: git
+         state: present
+
+
+
+root@shumail-Inspiron-N5110:/etc/ansible# sudo vim test.yml
+root@shumail-Inspiron-N5110:/etc/ansible# ansible-playbook test.yml
+[DEPRECATION WARNING]: DEFAULT_SUDO_USER option, In favor of Ansible Become, which is a generic framework. See become_user. , use become 
+instead. This feature will be removed in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+ansible.cfg.
+[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and make sure become_method is 'sudo' (default). This feature will be
+ removed in version 2.6. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [git installation] ***********************************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************************************
+ok: [192.168.33.50]
+ok: [192.168.33.10]
+
+TASK [apt] ************************************************************************************************************************************
+fatal: [192.168.33.50]: FAILED! => {"changed": false, "cmd": "apt-get update", "msg": "[Errno 2] No such file or directory", "rc": 2}
+ok: [192.168.33.10]
+	to retry, use: --limit @/etc/ansible/test.retry
+	
+PLAY RECAP ************************************************************************************************************************************
+192.168.33.10              : ok=2    changed=0    unreachable=0    failed=0   
+192.168.33.50              : ok=1    changed=0    unreachable=0    failed=1   
+
+
+6- install ngnix on two remote server through ansible.
+
+root@shumail-Inspiron-N5110:/etc# ansible all -m apt -a "name=nginx state=present"
+[DEPRECATION WARNING]: DEFAULT_SUDO_USER option, In favor of Ansible Become, which is a generic framework. See become_user. , use become 
+instead. This feature will be removed in version 2.8. Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+ansible.cfg.
+192.168.33.10 | SUCCESS => {
+    "cache_update_time": 1528463989, 
+    "cache_updated": false, 
+    "changed": false
+}
+192.168.33.50 | SUCCESS => {
+    "changed": false, 
+    "msg": "", 
+    "rc": 0, 
+    "results": [
+        "1:nginx-1.12.2-2.el7.x86_64 providing nginx is already installed"
+    ]
+}
+
+
+
+
