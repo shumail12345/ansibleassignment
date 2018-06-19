@@ -1,0 +1,388 @@
+                  ASSIGNMENT ANSIBLE DAY2
+
+1-Fetch and display to STDOUT Ansible facts using the setup module.
+root@control-server:/etc/ansible# ansible all -m fetch -a 'src=/var/shumail1 dest=/etc'
+192.168.33.10 | SUCCESS => {
+    "changed": true, 
+    "checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709", 
+    "dest": "/etc/192.168.33.10/var/shumail1", 
+    "md5sum": "d41d8cd98f00b204e9800998ecf8427e", 
+    "remote_checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709", 
+    "remote_md5sum": null
+}
+192.168.33.113 | SUCCESS => {
+    "changed": true, 
+    "checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709", 
+    "dest": "/etc/192.168.33.113/var/shumail1", 
+    "md5sum": "d41d8cd98f00b204e9800998ecf8427e", 
+    "remote_checksum": "da39a3ee5e6b4b0d3255bfef95601890afd80709", 
+    "remote_md5sum": null
+}
+
+
+2-Fetch and display only the "virtual" subset of facts for each host.
+root@control-server:/etc/ansible# ansible all -m setup -a 'gather_subset=virtual'
+192.168.33.10 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_apparmor": {
+            "status": "enabled"
+        }, 
+        "ansible_architecture": "x86_64", 
+        "ansible_cmdline": {
+            "BOOT_IMAGE": "/boot/vmlinuz-3.13.0-149-generic", 
+            "console": "ttyS0", 
+            "ro": true, 
+            "root": "UUID=b9f093dd-dab1-46d9-b09f-c28bfd05251b"
+        }, 
+        "ansible_date_time": {
+            "date": "2018-06-18", 
+            "day": "18", 
+            "epoch": "1529333568", 
+            "hour": "14", 
+            "iso8601": "2018-06-18T14:52:48Z", 
+            "iso8601_basic": "20180618T145248223631", 
+            "iso8601_basic_short": "20180618T145248", 
+            "iso8601_micro": "2018-06-18T14:52:48.223778Z", 
+            "minute": "52", 
+            "month": "06", 
+            "second": "48", 
+            "time": "14:52:48", 
+            "tz": "UTC", 
+            "tz_offset": "+0000", 
+            "weekday": "Monday", 
+            "weekday_number": "1", 
+            "weeknumber": "25", 
+            "year": "2018"
+        }, 
+        "ansible_distribution": "Ubuntu", 
+        "ansible_distribution_file_parsed": true, 
+        "ansible_distribution_file_path": "/etc/os-release", 
+        "ansible_distribution_file_variety": "Debian", 
+        "ansible_distribution_major_version": "14", 
+        "ansible_distribution_release": "trusty", 
+        "ansible_distribution_version": "14.04", 
+        "ansible_dns": {
+            "nameservers": [
+                "10.0.2.3"
+            ], 
+            "search": [
+                "Dlink"
+            ]
+        }, 
+        "ansible_domain": "", 
+        "ansible_effective_group_id": 0, 
+        "ansible_effective_user_id": 0, 
+        "ansible_env": {
+            "HOME": "/root", 
+            "LANG": "en_US.UTF-8", 
+            "LOGNAME": "root", 
+            "MAIL": "/var/mail/root", 
+            "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games", 
+            "PWD": "/root", 
+            "SHELL": "/bin/bash", 
+            "SHLVL": "1", 
+            "SSH_CLIENT": "192.168.33.111 46316 22", 
+            "SSH_CONNECTION": "192.168.33.111 46316 192.168.33.10 22", 
+            "SSH_TTY": "/dev/pts/2", 
+            "TERM": "xterm-256color", 
+            "USER": "root", 
+            "XDG_RUNTIME_DIR": "/run/user/0", 
+            "XDG_SESSION_ID": "39", 
+            "_": "/bin/sh"
+        }, 
+        "ansible_fips": false, 
+        "ansible_fqdn": "vagrant-ubuntu-trusty-64", 
+        "ansible_hostname": "vagrant-ubuntu-trusty-64", 
+        "ansible_kernel": "3.13.0-149-generic", 
+        "ansible_local": {}, 
+        "ansible_lsb": {
+            "codename": "trusty", 
+            "description": "Ubuntu 14.04.5 LTS", 
+            "id": "Ubuntu", 
+            "major_release": "14", 
+            "release": "14.04"
+        }, 
+        "ansible_machine": "x86_64", 
+        "ansible_machine_id": "4a3387f33030ebae7612f0355b261490", 
+        "ansible_nodename": "vagrant-ubuntu-trusty-64", 
+        "ansible_os_family": "Debian", 
+        "ansible_pkg_mgr": "apt", 
+        "ansible_python": {
+            "executable": "/usr/bin/python", 
+            "has_sslcontext": false, 
+            "type": "CPython", 
+            "version": {
+                "major": 2, 
+                "micro": 6, 
+                "minor": 7, 
+                "releaselevel": "final", 
+                "serial": 0
+            }, 
+            "version_info": [
+                2, 
+                7, 
+                6, 
+                "final", 
+                0
+            ]
+        }, 
+        "ansible_python_version": "2.7.6", 
+        "ansible_real_group_id": 0, 
+        "ansible_real_user_id": 0, 
+        "ansible_selinux": {
+            "status": "Missing selinux Python library"
+        }, 
+        "ansible_selinux_python_present": false, 
+        "ansible_service_mgr": "upstart", 
+        "ansible_ssh_host_key_dsa_public": "AAAAB3NzaC1kc3MAAACBAPoTymWDfGrrCC/LCCS6AlCOycDiYnyBMGPmAy4MaI9DGOvFzo1gfJIE2XJlBiH6XHCaUVaqmUmnwaaPR9VkscRbPQL/5MnUeoPVSdqN0H/RCwvVQzmjgM70fGzwp4PG1Z5liHpR8WV5yvBzo37W4SXd1ZUW84mp3C59GscuvpiLAAAAFQD/evd5JR6wX44L7yK+J1jkQyD55wAAAIEA70+L5mhla68mG1y8UwavW+spqjWbbYki49mJMJACLhcK+JOEVWq2P8XbkjCsEeBtE+NWp+7pybCdVSfQLwZN18aojYFqBAK/6OHNoHgDoQpwQeh91Y8X1w0br82leK1L71yThApLlh/GXtiQ+NbJxc9UIuHQwNMq7MwVjIDefPgAAACARqeLyPX/j3Nu25xRmmgdCvbCCPcOUTxpY3jcdh2g8gYG6I/eiy646Y2gT/3LGPTU6wnQzSzSAeC6u43tC1apgUw1Wr3UbCFKTzo4oAEz2ImJKk9QCz9OCqa5jIwWvIG/+mpUf6ob1IefZaUV5wHLE5AA4/lc1Qm2w63WF+3YqZ4=", 
+        "ansible_ssh_host_key_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNMd7xy+GjyYAJ710fvsCOJUI0rBz11ZAnKdY49QGXoot6khX4VVdN4f0TD95NWludfQbcayH9NYQ51xHTjy6Y4=", 
+        "ansible_ssh_host_key_ed25519_public": "AAAAC3NzaC1lZDI1NTE5AAAAIDS+goPxiwwsKQmw/nCWSe/fE+3TPjGIWAJy6flBuWBx", 
+        "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQDlKjPmVK4NvWDZUk6GQZJxammYc6h5c4Lt/CSTPfVAhoTt2yRxU1rl0yZoN1I4daUVOvDHoadJDJ8eDUqQkHJdVDBau02LJx/NwXNsdQ1Rfcs/LMYP6ryNmMf7VVQz8P16km3+LTeuMx41OchZaQjLAH4pgImwHDYGTnVelbfWRlSsaMQ4TpRMFrisz/SoQi4fs8rQukVo5U80lZhyG/7EQ/nQrKD+GbBTnTHxqkhqfCjKzlrQdYKRHihvpmexbch7PXH+WE1UFAOaUQdlGlrlELbym5VDMqISUXnCeEFHBvlG0tZnnICBQAiJoruyZD6SYzlNDInY9yg97dRPMhHJ", 
+        "ansible_system": "Linux", 
+        "ansible_system_capabilities": [
+            "cap_chown", 
+            "cap_dac_override", 
+            "cap_dac_read_search", 
+            "cap_fowner", 
+            "cap_fsetid", 
+            "cap_kill", 
+            "cap_setgid", 
+            "cap_setuid", 
+            "cap_setpcap", 
+            "cap_linux_immutable", 
+            "cap_net_bind_service", 
+            "cap_net_broadcast", 
+            "cap_net_admin", 
+            "cap_net_raw", 
+            "cap_ipc_lock", 
+            "cap_ipc_owner", 
+            "cap_sys_module", 
+            "cap_sys_rawio", 
+            "cap_sys_chroot", 
+            "cap_sys_ptrace", 
+            "cap_sys_pacct", 
+            "cap_sys_admin", 
+            "cap_sys_boot", 
+            "cap_sys_nice", 
+            "cap_sys_resource", 
+            "cap_sys_time", 
+            "cap_sys_tty_config", 
+            "cap_mknod", 
+            "cap_lease", 
+            "cap_audit_write", 
+            "cap_audit_control", 
+            "cap_setfcap", 
+            "cap_mac_override", 
+            "cap_mac_admin", 
+            "cap_syslog", 
+            "cap_wake_alarm", 
+            "cap_block_suspend+ep"
+        ], 
+        "ansible_system_capabilities_enforced": "True", 
+        "ansible_user_dir": "/root", 
+        "ansible_user_gecos": "root", 
+        "ansible_user_gid": 0, 
+        "ansible_user_id": "root", 
+        "ansible_user_shell": "/bin/bash", 
+        "ansible_user_uid": 0, 
+        "ansible_userspace_architecture": "x86_64", 
+        "ansible_userspace_bits": "64", 
+        "ansible_virtualization_role": "guest", 
+        "ansible_virtualization_type": "virtualbox", 
+        "gather_subset": [
+            "virtual"
+        ], 
+        "module_setup": true
+    }, 
+    "changed": false
+}
+192.168.33.113 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_apparmor": {
+            "status": "disabled"
+        }, 
+        "ansible_architecture": "x86_64", 
+        "ansible_cmdline": {
+            "BOOT_IMAGE": "/vmlinuz-3.10.0-862.2.3.el7.x86_64", 
+            "biosdevname": "0", 
+            "console": "ttyS0,115200n8", 
+            "crashkernel": "auto", 
+            "elevator": "noop", 
+            "net.ifnames": "0", 
+            "no_timer_check": true, 
+            "quiet": true, 
+            "rd.lvm.lv": "VolGroup00/LogVol01", 
+            "rhgb": true, 
+            "ro": true, 
+            "root": "/dev/mapper/VolGroup00-LogVol00"
+        }, 
+        "ansible_date_time": {
+            "date": "2018-06-18", 
+            "day": "18", 
+            "epoch": "1529333568", 
+            "hour": "14", 
+            "iso8601": "2018-06-18T14:52:48Z", 
+            "iso8601_basic": "20180618T145248183513", 
+            "iso8601_basic_short": "20180618T145248", 
+            "iso8601_micro": "2018-06-18T14:52:48.183653Z", 
+            "minute": "52", 
+            "month": "06", 
+            "second": "48", 
+            "time": "14:52:48", 
+            "tz": "UTC", 
+            "tz_offset": "+0000", 
+            "weekday": "Monday", 
+            "weekday_number": "1", 
+            "weeknumber": "25", 
+            "year": "2018"
+        }, 
+        "ansible_distribution": "CentOS", 
+        "ansible_distribution_file_parsed": true, 
+        "ansible_distribution_file_path": "/etc/redhat-release", 
+        "ansible_distribution_file_variety": "RedHat", 
+        "ansible_distribution_major_version": "7", 
+        "ansible_distribution_release": "Core", 
+        "ansible_distribution_version": "7.5.1804", 
+        "ansible_dns": {
+            "nameservers": [
+                "10.0.2.3"
+            ], 
+            "search": [
+                "Dlink"
+            ]
+        }, 
+        "ansible_domain": "", 
+        "ansible_effective_group_id": 0, 
+        "ansible_effective_user_id": 0, 
+        "ansible_env": {
+            "HOME": "/root", 
+            "LANG": "en_US.UTF-8", 
+            "LESSOPEN": "||/usr/bin/lesspipe.sh %s", 
+            "LOGNAME": "root", 
+            "LS_COLORS": "rs=0:di=38;5;27:ln=38;5;51:mh=44;38;5;15:pi=40;38;5;11:so=38;5;13:do=38;5;5:bd=48;5;232;38;5;11:cd=48;5;232;38;5;3:or=48;5;232;38;5;9:mi=05;48;5;232;38;5;15:su=48;5;196;38;5;15:sg=48;5;11;38;5;16:ca=48;5;196;38;5;226:tw=48;5;10;38;5;16:ow=48;5;10;38;5;21:st=48;5;21;38;5;15:ex=38;5;34:*.tar=38;5;9:*.tgz=38;5;9:*.arc=38;5;9:*.arj=38;5;9:*.taz=38;5;9:*.lha=38;5;9:*.lz4=38;5;9:*.lzh=38;5;9:*.lzma=38;5;9:*.tlz=38;5;9:*.txz=38;5;9:*.tzo=38;5;9:*.t7z=38;5;9:*.zip=38;5;9:*.z=38;5;9:*.Z=38;5;9:*.dz=38;5;9:*.gz=38;5;9:*.lrz=38;5;9:*.lz=38;5;9:*.lzo=38;5;9:*.xz=38;5;9:*.bz2=38;5;9:*.bz=38;5;9:*.tbz=38;5;9:*.tbz2=38;5;9:*.tz=38;5;9:*.deb=38;5;9:*.rpm=38;5;9:*.jar=38;5;9:*.war=38;5;9:*.ear=38;5;9:*.sar=38;5;9:*.rar=38;5;9:*.alz=38;5;9:*.ace=38;5;9:*.zoo=38;5;9:*.cpio=38;5;9:*.7z=38;5;9:*.rz=38;5;9:*.cab=38;5;9:*.jpg=38;5;13:*.jpeg=38;5;13:*.gif=38;5;13:*.bmp=38;5;13:*.pbm=38;5;13:*.pgm=38;5;13:*.ppm=38;5;13:*.tga=38;5;13:*.xbm=38;5;13:*.xpm=38;5;13:*.tif=38;5;13:*.tiff=38;5;13:*.png=38;5;13:*.svg=38;5;13:*.svgz=38;5;13:*.mng=38;5;13:*.pcx=38;5;13:*.mov=38;5;13:*.mpg=38;5;13:*.mpeg=38;5;13:*.m2v=38;5;13:*.mkv=38;5;13:*.webm=38;5;13:*.ogm=38;5;13:*.mp4=38;5;13:*.m4v=38;5;13:*.mp4v=38;5;13:*.vob=38;5;13:*.qt=38;5;13:*.nuv=38;5;13:*.wmv=38;5;13:*.asf=38;5;13:*.rm=38;5;13:*.rmvb=38;5;13:*.flc=38;5;13:*.avi=38;5;13:*.fli=38;5;13:*.flv=38;5;13:*.gl=38;5;13:*.dl=38;5;13:*.xcf=38;5;13:*.xwd=38;5;13:*.yuv=38;5;13:*.cgm=38;5;13:*.emf=38;5;13:*.axv=38;5;13:*.anx=38;5;13:*.ogv=38;5;13:*.ogx=38;5;13:*.aac=38;5;45:*.au=38;5;45:*.flac=38;5;45:*.mid=38;5;45:*.midi=38;5;45:*.mka=38;5;45:*.mp3=38;5;45:*.mpc=38;5;45:*.ogg=38;5;45:*.ra=38;5;45:*.wav=38;5;45:*.axa=38;5;45:*.oga=38;5;45:*.spx=38;5;45:*.xspf=38;5;45:", 
+
+
+
+3-Fetch and display the value of fully qualified domain name (FQDN) of each host from their Ansible facts.
+root@control-server:/etc/ansible# ansible all -m setup
+192.168.33.113 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "192.168.33.113", 
+            "10.0.2.15"
+        ], 
+        "ansible_all_ipv6_addresses": [
+            "fe80::a00:27ff:fe3d:21f", 
+            "fe80::5054:ff:fec9:c704"
+        ], 
+        "ansible_apparmor": {
+            "status": "disabled"
+        }, 
+        "ansible_architecture": "x86_64", 
+        "ansible_bios_date": "12/01/2006", 
+        "ansible_bios_version": "VirtualBox", 
+        "ansible_cmdline": {
+            "BOOT_IMAGE": "/vmlinuz-3.10.0-862.2.3.el7.x86_64", 
+            "biosdevname": "0", 
+            "console": "ttyS0,115200n8", 
+            "crashkernel": "auto", 
+            "elevator": "noop", 
+            "net.ifnames": "0", 
+            "no_timer_check": true, 
+            "quiet": true, 
+            "rd.lvm.lv": "VolGroup00/LogVol01", 
+            "rhgb": true, 
+            "ro": true, 
+            "root": "/dev/mapper/VolGroup00-LogVol00"
+        }, 
+        "ansible_date_time": {
+            "date": "2018-06-18", 
+            "day": "18", 
+            "epoch": "1529333800", 
+            "hour": "14", 
+            "iso8601": "2018-06-18T14:56:40Z", 
+            "iso8601_basic": "20180618T145640691950", 
+            "iso8601_basic_short": "20180618T145640", 
+            "iso8601_micro": "2018-06-18T14:56:40.692102Z", 
+            "minute": "56", 
+            "month": "06", 
+            "second": "40", 
+            "time": "14:56:40", 
+            "tz": "UTC", 
+            "tz_offset": "+0000", 
+            "weekday": "Monday", 
+            "weekday_number": "1", 
+            "weeknumber": "25", 
+            "year": "2018"
+        }, 
+        "ansible_default_ipv4": {
+            "address": "10.0.2.15", 
+            "alias": "eth0", 
+            "broadcast": "10.0.2.255", 
+            "gateway": "10.0.2.2", 
+            "interface": "eth0", 
+            "macaddress": "52:54:00:c9:c7:04", 
+            "mtu": 1500, 
+            "netmask": "255.255.255.0", 
+            "network": "10.0.2.0", 
+            "type": "ether"
+        }, 
+        "ansible_default_ipv6": {}, 
+        "ansible_device_links": {
+            "ids": {
+                "dm-0": [
+                    "dm-name-VolGroup00-LogVol00", 
+                    "dm-uuid-LVM-SA8LTUF2yzFEV1R
+
+
+root@control-server:/etc/ansible# ansible all -m setup | grep fqdn
+        "ansible_fqdn": "ansible-centos", 
+        "ansible_fqdn": "vagrant-ubuntu-trusty-64", 
+        "facter_fqdn": "vagrant-ubuntu-trusty-64.Dlink", 
+        "ohai_fqdn": "vagrant-ubuntu-trusty-64", 
+root@control-server:/etc/ansible# ansible all -m setup | grep ansible_fqdn
+        "ansible_fqdn": "ansible-centos", 
+        "ansible_fqdn": "vagrant-ubuntu-trusty-64", 
+
+
+
+4-Display the uptime of all hosts using the command module.
+root@control-server:/etc/ansible# ansible all -m command -a 'uptime'
+192.168.33.10 | SUCCESS | rc=0 >>
+ 13:52:47 up  8:27,  2 users,  load average: 0.00, 0.01, 0.05
+
+192.168.33.113 | SUCCESS | rc=0 >>
+ 13:52:47 up  8:27,  2 users,  load average: 0.08, 0.03, 0.05
+  
+5-Ping all hosts except the 'control' host using the --limit option
+root@control-server:/etc/ansible# ansible all -m ping '--limit=192.168.33.10'
+192.168.33.10 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+
+
+
+6-Setup Java8 on the hosts in the "App" group using the apt module.
+root@control-server:/etc/ansible# ansible all -m yum -a 'name=java-1.8.0-openjdk state=present'
+192.168.33.113 | SUCCESS => {
+    "changed": true, 
+    "msg": "/usr/share/man/man5/cert8.db.5.gz: No such file or directory\ncannot reconstruct rpm from disk files\n/usr/share/man/man1/certutil.1.gz: No such file or directory\ncannot reconstruct rpm from disk files\n", 
+    "rc": 0, 
+    "results": [
+        "Loaded plugins: fastestmirror\nLoading mirror speeds from cached hostfile\n * base: del-mirrors.extreme-ix.org\n * extras: del-mirrors.extreme-ix.org\n * updates: del-mirrors.extreme-ix.org\nResolving Dependencies\n--> Running transaction check\n---> Package java-1.8.0-openjdk.x86_64 1:1.8.0.171-8.b10.el7_5 will be installed\n--> Processing Dependency: java-1.8.0-openjdk-headless(x86-64) = 1:1.8.0.171-8.b10.el7_5 for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: xorg-x11-fonts-Type1 for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libpng15.so.15(PNG15_0)(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libjvm.so(SUNWprivate_1.1)(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libjpeg.so.62(LIBJPEG_6.2)(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libjli.so(SUNWprivate_1.1)(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libjava.so(SUNWprivate_1.1)(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libasound.so.2(ALSA_0.9.0rc4)(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libasound.so.2(ALSA_0.9)(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: fontconfig(x86-64) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libpng15.so.15()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libjvm.so()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libjpeg.so.62()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libjli.so()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libjava.so()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libgif.so.4()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libawt.so()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libasound.so.2()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libXtst.so.6()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libXrender.so.1()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libXi.so.6()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libXext.so.6()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libXcomposite.so.1()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: libX11.so.6()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.171-8.b10.el7_5.x86_64\n--> Running transaction check\n---> Package alsa-lib.x86_64 0:1.1.4.1-2.el7 will be installed\n---> Package fontconfig.x86_64 0:2.10.95-11.el7 will be installed\n--> Processing Dependency: fontpackages-filesystem for package: fontconfig-2.10.95-11.el7.x86_64\n--> Processing Dependency: font(:lang=en) for package: fontconfig-2.10.95-11.el7.x86_64\n---> Package giflib.x86_64 0:4.1.6-9.el7 will be installed\n--> Processing Dependency: libSM.so.6()(64bit) for package: giflib-4.1.6-9.el7.x86_64\n--> Processing Dependency: libICE.so.6()(64bit) for package: giflib-4.1.6-9.el7.x86_64\n---> Package java-1.8.0-openjdk-headless.x86_64 1:1.8.0.171-8.b10.el7_5 will be installed\n--> Processing Dependency: tzdata-java >= 2015d for package: 1:java-1.8.0-openjdk-headless-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: nss-softokn(x86-64) >= 3.36.0 for package: 1:java-1.8.0-openjdk-headless-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: nss(x86-64) >= 3.36.0 for package: 1:java-1.8.0-openjdk-headless-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: copy-jdk-configs >= 2.2 for package: 1:java-1.8.0-openjdk-headless-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: lksctp-tools(x86-64) for package: 1:java-1.8.0-openjdk-headless-1.8.0.171-8.b10.el7_5.x86_64\n--> Processing Dependency: jpackage-utils for package: 1:java-1.8.0-openjdk-headless-1.8.0.171-8.b10.el7_5.x86_64\n---> Package libX11.x86_64 0:1.6.5-1.el7 will be installed\n--> Processing Dependency: libX11-common >= 1.6.5-1.el7 for package: libX11-1.6.5-1.el7.x86_64\n--> 
+
+
+7-Setup and enable the EPEL package repository on the hosts in the "web" group using the yum module.
+root@control-server:/etc/ansible# ansible all -m yum -a 'name=epel-release state=present'
+192.168.33.113 | SUCCESS => {
+    "changed": true, 
+    "msg": "", 
+    "rc": 0, 
+    "results": [
+        "Loaded plugins: fastestmirror\nLoading mirror speeds from cached hostfile\n * base: del-mirrors.extreme-ix.org\n * extras: del-mirrors.extreme-ix.org\n * updates: del-mirrors.extreme-ix.org\nResolving Dependencies\n--> Running transaction check\n---> Package epel-release.noarch 0:7-11 will be installed\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package                Arch             Version         Repository        Size\n================================================================================\nInstalling:\n epel-release           noarch           7-11            extras            15 k\n\nTransaction Summary\n================================================================================\nInstall  1 Package\n\nTotal download size: 15 k\nInstalled size: 24 k\nDownloading packages:\nRunning transaction check\nRunning transaction test\nTransaction test succeeded\nRunning transaction\n  Installing : epel-release-7-11.noarch                                     1/1 \n  Verifying  : epel-release-7-11.noarch                                     1/1 \n\nInstalled:\n  epel-release.noarch 0:7-11                                                    \n\nComplete!\n"
+    ]
+}
+
+
+
