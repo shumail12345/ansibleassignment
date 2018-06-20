@@ -1,0 +1,163 @@
+                   ASSIGNMENT ANSIBLE DAY3
+
+1-Create and delete ninja directory on host machine
+root@control-server:/etc/ansible# ansible all -m command -a "mkdir /shumail1"
+ [WARNING]: Consider using the file module with state=directory rather than
+running mkdir.  If you need to use command because file is insufficient you can
+add warn=False to this command task or set command_warnings=False in
+ansible.cfg to get rid of this message.
+
+192.168.33.10 | SUCCESS | rc=0 >>
+
+
+192.168.33.113 | SUCCESS | rc=0 >>
+
+
+root@control-server:/etc/ansible# ansible all -m command -a "rmdir  /shumail1"
+ [WARNING]: Consider using the file module with state=absent rather than
+running rmdir.  If you need to use command because file is insufficient you can
+add warn=False to this command task or set command_warnings=False in
+ansible.cfg to get rid of this message.
+
+192.168.33.10 | SUCCESS | rc=0 >>
+
+
+192.168.33.113 | SUCCESS | rc=0 >>
+
+           or 
+root@control-server:/etc/ansible# ansible all -m command -a "rm -rf  /shumail1"
+ [WARNING]: Consider using the file module with state=absent rather than
+running rm.  If you need to use command because file is insufficient you can
+add warn=False to this command task or set command_warnings=False in
+ansible.cfg to get rid of this message.
+
+192.168.33.10 | SUCCESS | rc=0 >>
+
+
+192.168.33.113 | SUCCESS | rc=0 >>
+
+
+
+
+2-Set hostname on all nodes from remote machine
+root@control-server:/etc/ansible# ansible all -m command -a "hostname"
+192.168.33.10 | SUCCESS | rc=0 >>
+vagrant-ubuntu-trusty-64
+
+192.168.33.113 | SUCCESS | rc=0 >>
+ansible-centos
+
+root@control-server:/etc/ansible# ansible ubuntu -m hostname -a "name=ubun"
+192.168.33.10 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_domain": "", 
+        "ansible_fqdn": "ubun", 
+        "ansible_hostname": "ubun", 
+        "ansible_nodename": "ubun"
+    }, 
+    "changed": true, 
+    "name": "ubun"
+}
+root@control-server:/etc/ansible# ansible centos -m hostname -a "name=cento"
+192.168.33.113 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_domain": "", 
+        "ansible_fqdn": "cento", 
+        "ansible_hostname": "cento", 
+        "ansible_nodename": "cento"
+    }, 
+    "changed": true, 
+    "name": "cento"
+}
+root@control-server:/etc/ansible# ansible all -m command -a "hostname"
+192.168.33.10 | SUCCESS | rc=0 >>
+ubun
+
+192.168.33.113 | SUCCESS | rc=0 >>
+cento
+
+
+
+
+3-Fetch os of all nodes and store o/p into a file, use min two different machine of different flavour of os.
+ansible all -m shell -a 'uname -a' > /etc/b.txt
+
+192.168.33.113 | SUCCESS | rc=0 >>
+Linux cento 3.10.0-862.2.3.el7.x86_64 #1 SMP Wed May 9 18:05:47 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+192.168.33.10 | SUCCESS | rc=0 >>
+Linux ubun 3.13.0-149-generic #199-Ubuntu SMP Thu May 17 10:12:50 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+~                                                                                                                                            
+~ 
+                                    or
+root@control-server:/etc/ansible#  ansible all -m command -a 'cat /etc/os-release' > /shumail12
+
+92.168.33.10 | SUCCESS | rc=0 >>
+NAME="Ubuntu"
+VERSION="14.04.5 LTS, Trusty Tahr"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 14.04.5 LTS"
+VERSION_ID="14.04"
+HOME_URL="http://www.ubuntu.com/"
+SUPPORT_URL="http://help.ubuntu.com/"
+BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
+192.168.33.113 | SUCCESS | rc=0 >>
+NAME="CentOS Linux"
+VERSION="7 (Core)"
+ID="centos"
+ID_LIKE="rhel fedora"
+VERSION_ID="7"
+PRETTY_NAME="CentOS Linux 7 (Core)"
+ANSI_COLOR="0;31"
+CPE_NAME="cpe:/o:centos:centos:7"
+HOME_URL="https://www.centos.org/"
+BUG_REPORT_URL="https://bugs.centos.org/"
+
+CENTOS_MANTISBT_PROJECT="CentOS-7"
+CENTOS_MANTISBT_PROJECT_VERSION="7"
+REDHAT_SUPPORT_PRODUCT="centos"
+REDHAT_SUPPORT_PRODUCT_VERSION="7"
+
+~                                                                                                                                              
+~                                                                                                                                              
+~                                                                                                                                              
+~                                                                                                                                              
+
+
+4-   Install apache on Debian machine
+     Cross check apache isntalled or not from remote machine
+     Apache runn  on 8082 port
+     Create two virtual host
+     Restart apache from remote machine
+
+root@control-server:~# ansible centos -m yum -a "name=httpd state=present"
+192.168.33.113 | SUCCESS => {
+    "changed": true, 
+    "msg": "", 
+    "rc": 0, 
+    "results": [
+        "Loaded plugins: fastestmirror\nLoading mirror speeds from cached hostfile\n * base: del-mirrors.extreme-ix.org\n * epel: del-mirrors.extreme-ix.org\n * extras: del-mirrors.extreme-ix.org\n * updates: del-mirrors.extreme-ix.org\nResolving Dependencies\n--> Running transaction check\n---> Package httpd.x86_64 0:2.4.6-80.el7.centos will be installed\n--> Processing Dependency: httpd-tools = 2.4.6-80.el7.centos for package: httpd-2.4.6-80.el7.centos.x86_64\n--> Processing Dependency: /etc/mime.types for package: httpd-2.4.6-80.el7.centos.x86_64\n--> Processing Dependency: libaprutil-1.so.0()(64bit) for package: httpd-2.4.6-80.el7.centos.x86_64\n--> Processing Dependency: libapr-1.so.0()(64bit) for package: httpd-2.4.6-80.el7.centos.x86_64\n--> Running transaction check\n---> Package apr.x86_64 0:1.4.8-3.el7_4.1 will be installed\n---> Package apr-util.x86_64 0:1.5.2-6.el7 will be installed\n---> Package httpd-tools.x86_64 0:2.4.6-80.el7.centos will be installed\n---> Package mailcap.noarch 0:2.1.41-2.el7 will be installed\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package            Arch          Version                     Repository   Size\n================================================================================\nInstalling:\n httpd              x86_64        2.4.6-80.el7.centos         base        2.7 M\nInstalling for dependencies:\n apr                x86_64        1.4.8-3.el7_4.1             base        103 k\n apr-util           x86_64        1.5.2-6.el7                 base         92 k\n httpd-tools        x86_64        2.4.6-80.el7.centos         base         89 k\n mailcap            noarch        2.1.41-2.el7                base         31 k\n\nTransaction Summary\n================================================================================\nInstall  1 Package (+4 Dependent packages)\n\nTotal download size: 3.0 M\nInstalled size: 10 M\nDownloading packages:\n--------------------------------------------------------------------------------\nTotal                                              970 kB/s | 3.0 MB  00:03     \nRunning transaction check\nRunning transaction test\nTransaction test succeeded\nRunning transaction\n  Installing : apr-1.4.8-3.el7_4.1.x86_64                                   1/5 \n  Installing : apr-util-1.5.2-6.el7.x86_64                                  2/5 \n  Installing : httpd-tools-2.4.6-80.el7.centos.x86_64                       3/5 \n  Installing : mailcap-2.1.41-2.el7.noarch                                  4/5 \n  Installing : httpd-2.4.6-80.el7.centos.x86_64                             5/5 \n  Verifying  : httpd-tools-2.4.6-80.el7.centos.x86_64                       1/5 \n  Verifying  : apr-1.4.8-3.el7_4.1.x86_64                                   2/5 \n  Verifying  : mailcap-2.1.41-2.el7.noarch                                  3/5 \n  Verifying  : httpd-2.4.6-80.el7.centos.x86_64                             4/5 \n  Verifying  : apr-util-1.5.2-6.el7.x86_64                                  5/5 \n\nInstalled:\n  httpd.x86_64 0:2.4.6-80.el7.centos                                            \n\nDependency Installed:\n  apr.x86_64 0:1.4.8-3.el7_4.1                 apr-util.x86_64 0:1.5.2-6.el7    \n  httpd-tools.x86_64 0:2.4.6-80.el7.centos     mailcap.noarch 0:2.1.41-2.el7    \n\nComplete!\n"
+    ]
+}
+ 
+
+on remote machine 
+
+● httpd.service - The Apache HTTP Server
+   Loaded: loaded (/usr/lib/systemd/system/httpd.service; disabled; vendor preset: disabled)
+   Active: active (running) since Wed 2018-06-20 10:49:01 UTC; 11s ago
+     Docs: man:httpd(8)
+           man:apachectl(8)
+ Main PID: 16155 (httpd)
+   Status: "Total requests: 0; Current requests/sec: 0; Current traffic:   0 B/sec"
+   CGroup: /system.slice/httpd.service
+           ├─16155 /usr/sbin/httpd -DFOREGROUND
+           ├─16156 /usr/sbin/httpd -DFOREGROUND
+           ├─16157 /usr/sbin/httpd -DFOREGROUND
+           ├─16158 /usr/sbin/httpd -DFOREGROUND
+           ├─16159 /usr/sbin/httpd -DFOREGROUND
+           └─16160 /usr/sbin/httpd -DFOREGROUND
+
+                                                                                                                                               
+
+
